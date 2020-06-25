@@ -6,8 +6,8 @@ from .models import *
 class ChatConsumerEditor(AsyncWebsocketConsumer):
     async def connect(self):
        
-       # self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_name = "hello"
+        self.room_name = self.scope['url_route']['kwargs']['room_name']
+        # self.room_name = "hello"
         self.room_group_name = 'chat_%s' % self.room_name
 
         # Join room group
@@ -40,16 +40,13 @@ class ChatConsumerEditor(AsyncWebsocketConsumer):
             {
                 'type': 'chat_message',
                 'message': message,
-                'code':code,
-                'admin':admin
             }
         )
 
     # Receive message from room group
     async def chat_message(self, event):
         message = event['message']
-        code = event['code']
-        admin = event['admin']
+        
         
         
         # messages = TestMessage(message = message)
@@ -57,9 +54,7 @@ class ChatConsumerEditor(AsyncWebsocketConsumer):
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            
-            'code': code,
+              
             'message': message ,
-            'admin':admin
             
         }))
